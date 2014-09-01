@@ -1,4 +1,4 @@
-import iso8601
+import ciso8601
 
 from nameko.legacy.common import UTCNOW, UIDGEN
 
@@ -7,7 +7,7 @@ class Context(dict):
 
     def __init__(self, user_id, timestamp=None, request_id=None, **kwargs):
         if isinstance(timestamp, basestring):
-            timestamp = iso8601.parse_date(timestamp)
+            timestamp = ciso8601.parse_datetime(timestamp)
         self.timestamp = timestamp or UTCNOW()
         self.request_id = request_id or UIDGEN()
         self.update(kwargs)
@@ -35,7 +35,8 @@ class Context(dict):
         res = self.copy()
 
         timestamp = self.timestamp.isoformat()
-        timestamp = timestamp[:timestamp.index('+')]
+        if '+' in timestamp:
+            timestamp = timestamp[:timestamp.index('+')]
         res.update({
             'timestamp': timestamp,
             'project_id': None,
