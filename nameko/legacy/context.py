@@ -1,4 +1,4 @@
-import iso8601
+import arrow
 
 from nameko.legacy.common import UTCNOW, UIDGEN
 
@@ -7,7 +7,7 @@ class Context(dict):
 
     def __init__(self, user_id, timestamp=None, request_id=None, **kwargs):
         if isinstance(timestamp, basestring):
-            timestamp = iso8601.parse_date(timestamp)
+            timestamp = arrow.get(timestamp).datetime
         self.timestamp = timestamp or UTCNOW()
         self.request_id = request_id or UIDGEN()
         self.update(kwargs)
