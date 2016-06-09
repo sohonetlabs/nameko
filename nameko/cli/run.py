@@ -23,6 +23,7 @@ from nameko.constants import AMQP_URI_CONFIG_KEY
 from nameko.exceptions import CommandError
 from nameko.extensions import ENTRYPOINT_EXTENSIONS_ATTR
 from nameko.runners import ServiceRunner
+from nameko.cli.reloader import run_with_reloader
 
 
 logger = logging.getLogger(__name__)
@@ -182,7 +183,11 @@ def main(args):
             import_service(path)
         )
 
-    run(services, config, backdoor_port=args.backdoor_port)
+    if args.dev:
+        run_with_reloader(
+            run, services, config, backdoor_port=args.backdoor_port)
+    else:
+        run(services, config, backdoor_port=args.backdoor_port)
 
 
 def init_parser(parser):
@@ -204,5 +209,9 @@ def init_parser(parser):
         help='Specify a port number to host a backdoor, which can be connected'
         ' to for an interactive interpreter within the running service'
         ' process using `nameko backdoor`.')
+
+    parser.add_argument(
+        '--dev', action='store_true',
+        help='Run service in development mode with reloader enabled.')
 
     return parser
