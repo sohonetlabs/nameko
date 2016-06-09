@@ -39,8 +39,10 @@ def restart_with_reloader():
     """Spawn a new Python interpreter with the same arguments as this one,
     but running the reloader thread.
     """
+    _log.info('> Running with reloader')
     while True:
-        _log.info('Restarting with reloader')
+        _log.info('-' * 5)
+
         args = [sys.executable] + sys.argv
         new_environ = os.environ.copy()
         new_environ['NAMEKO_RUN'] = 'true'

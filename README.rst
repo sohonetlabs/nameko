@@ -43,6 +43,19 @@ And play with it from another:
     >>> n.rpc.greeting_service.hello(name="Matt")
     u'Hello, Matt!'
 
+For development, run it with a reloader:
+
+.. code-block:: shell
+
+    $ nameko run helloworld --dev
+    > Running with reloader
+    -----
+    starting services: greeting_service
+    Detected change in greeting_service.py, reloading
+    -----
+    starting services: greeting_service
+    ...
+
 
 Features
 --------
